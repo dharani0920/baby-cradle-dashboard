@@ -13,432 +13,272 @@
                 extend: {
                     colors: {
                         darkBg: '#0b0f19',
-                        cardBg: '#131c2e',
-                        cardHover: '#1a263f',
+                        cardBg: '#131c31',
+                        cardBorder: '#1e293b',
                         accentTeal: '#06b6d4',
                         accentGreen: '#10b981',
-                        accentRed: '#ef4444',
                     }
                 }
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-    </style>
 </head>
-<body class="bg-darkBg text-slate-100 min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-white">
+<body class="bg-darkBg text-slate-100 font-sans min-h-screen antialiased selection:bg-accentTeal selection:text-black">
 
-    <header class="w-full bg-[#0e1626]/80 backdrop-blur border-b border-slate-800 px-4 sm:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4 sticky top-0 z-50">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold text-lg shadow-inner">
-                <i class="fa-solid fa-baby"></i>
-            </div>
-            <div>
-                <h1 class="text-base sm:text-lg font-semibold tracking-wide text-white">Hello, Parent</h1>
-                <p class="text-xs text-slate-400">Here's what's happening with the baby cradle.</p>
-            </div>
+    <!-- Top Header Bar -->
+    <header class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center border-b border-cardBorder/60 gap-4">
+        <div>
+            <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                Hello, Parent's Dashboard <span class="text-xs px-2 py-0.5 rounded-full bg-accentGreen/20 text-accentGreen border border-accentGreen/30">ESP32 Live</span>
+            </h1>
+            <p class="text-xs text-slate-400">Real-time monitoring of cradle occupancy, weight, movement, and temperature.</p>
         </div>
-
-        <div class="flex items-center gap-4 bg-slate-900/80 px-4 py-2 rounded-full border border-slate-800 text-xs text-slate-300">
-            <!-- Connection Status -->
-            <div class="flex items-center gap-1.5" id="connection-indicator">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span id="connection-text" class="font-medium text-emerald-400">ESP32 Online</span>
+        
+        <!-- System Status Bar Pills -->
+        <div class="flex items-center gap-3 bg-cardBg px-4 py-2 rounded-full border border-cardBorder text-xs">
+            <div class="flex items-center gap-1.5 text-accentGreen font-medium">
+                <span class="w-2 h-2 rounded-full bg-accentGreen animate-pulse"></span>
+                Online
             </div>
-            <div class="h-3 w-px bg-slate-700"></div>
-            <!-- Power Status -->
-            <div class="flex items-center gap-1.5" title="Power Supply Unit Voltage">
+            <div class="text-slate-500">|</div>
+            <div class="flex items-center gap-1.5 text-slate-300">
                 <i class="fa-solid fa-bolt text-amber-400"></i>
-                <span id="power-status">5.0V Stable</span>
+                <span id="power-status">5.0V Supply</span>
             </div>
-            <div class="h-3 w-px bg-slate-700"></div>
-            <!-- Clock -->
-            <div class="flex items-center gap-1.5">
-                <i class="fa-regular fa-clock text-cyan-400"></i>
-                <span id="live-clock">--:--</span>
+            <div class="text-slate-500">|</div>
+            <div class="flex items-center gap-1.5 text-slate-300 font-mono" id="live-clock">
+                23:07
             </div>
         </div>
     </header>
 
-    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
-        
-        <!-- Hero Banner Card -->
-        <section class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-950 border border-slate-800 shadow-2xl p-6 sm:p-10 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
-            
-            <div class="space-y-4 z-10 max-w-2xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold tracking-wider uppercase">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                    System Live • ESP32 Connected
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 py-6 space-y-6">
+
+        <!-- Hero Banner with Baby Cuddling Background Image -->
+        <div class="relative rounded-3xl overflow-hidden border border-cardBorder shadow-2xl min-h-[260px] flex items-center p-6 md:p-10">
+            <!-- Background Image with Overlay -->
+            <div class="absolute inset-0 bg-cover bg-center z-0 filter brightness-50 contrast-125" style="background-image: url('https://images.unsplash.com/photo-1555252333-9f8e92e65df9?q=80&w=1600&auto=format&fit=crop');"></div>
+            <!-- Gradient Overlay for readability -->
+            <div class="absolute inset-0 bg-gradient-to-r from-darkBg via-darkBg/80 to-transparent z-0"></div>
+
+            <!-- Content inside Banner -->
+            <div class="relative z-10 max-w-2xl space-y-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accentTeal/20 border border-accentTeal/40 text-accentTeal text-xs font-semibold tracking-wide uppercase backdrop-blur-md">
+                    <i class="fa-solid fa-shield-heart"></i> System Live & Active
                 </div>
-                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-                    Smart Baby <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-300">Cradle</span> Dashboard
+                <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
+                    Smart Baby <span class="text-accentTeal">Cradle Dashboard</span>
                 </h2>
-                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                    Real-time monitoring of cradle occupancy via ultrasonic sensor, accurate weight tracking with HX711 load cell, and automated comfort vibration controls.
+                <p class="text-sm md:text-base text-slate-300 leading-relaxed">
+                    Continuous monitoring using ESP32, load cell weight sensors, ultrasonic proximity detection, vibration alerts, and live environmental telemetry.
                 </p>
                 <div class="flex flex-wrap gap-3 pt-2">
-                    <button onclick="triggerSimulation()" class="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-xl text-xs sm:text-sm transition-all shadow-lg shadow-cyan-500/20 flex items-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-rotate"></i> Simulate Event
+                    <button onclick="triggerVibrationTest()" class="px-4 py-2 bg-accentTeal hover:bg-cyan-500 text-black font-semibold text-xs rounded-xl transition shadow-lg shadow-cyan-900/30 flex items-center gap-2">
+                        <i class="fa-solid fa-wave-square"></i> Test Cradle Vibration
                     </button>
-                    <button onclick="toggleVibrationMotor()" id="banner-vibe-btn" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium rounded-xl text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-wave-square text-cyan-400"></i> Toggle Vibration Motor
+                    <button onclick="toggleSimulation()" id="sim-toggle-btn" class="px-4 py-2 bg-cardBg hover:bg-slate-800 text-slate-200 border border-cardBorder text-xs font-semibold rounded-xl transition">
+                        Pause Simulation
                     </button>
                 </div>
             </div>
+        </div>
 
-            <!-- Visual Cradle Status Graphic -->
-            <div class="z-10 bg-slate-900/90 border border-slate-800 p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center min-w-[220px] text-center">
-                <div class="w-16 h-16 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-3xl mb-3 shadow-inner">
-                    <i class="fa-solid fa-child-reaching"></i>
-                </div>
-                <span class="text-xs uppercase tracking-widest text-slate-400 font-medium">Cradle Status</span>
-                <span id="hero-occupancy-badge" class="text-lg font-bold text-emerald-400 mt-1">Baby Sleeping Soundly</span>
-                <span class="text-[11px] text-slate-500 mt-1">Active sensor poll: Every 1s</span>
-            </div>
-        </section>
+        <!-- Metric Cards Grid (Bottom 4 Cards) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-            <!-- Card 1: Cradle Occupancy & Position -->
-            <div class="bg-cardBg hover:bg-cardHover border border-slate-800/80 rounded-3xl p-6 transition-all duration-300 shadow-xl flex flex-col justify-between group">
-                <div>
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 text-lg">
-                                <i class="fa-solid fa-ruler-vertical"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-white text-base">Occupancy & Position</h3>
-                                <p class="text-xs text-slate-400">Ultrasonic Sensor (HC-SR04)</p>
-                            </div>
-                        </div>
-                        <span id="occupancy-pill" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                            Occupied
-                        </span>
+            <!-- Card 1: Cradle Occupancy -->
+            <div class="bg-cardBorder/40 backdrop-blur-xl border border-cardBorder rounded-2xl p-5 flex flex-col justify-between shadow-lg relative overflow-hidden group hover:border-accentTeal/50 transition duration-300">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Occupancy Status</p>
+                        <h3 class="text-lg font-bold text-white mt-1 flex items-center gap-2">
+                            <i class="fa-solid fa-baby text-accentTeal"></i> Cradle Sensor
+                        </h3>
                     </div>
-
-                    <div class="my-6 space-y-4">
-                        <div class="flex justify-between items-baseline">
-                            <span class="text-slate-400 text-sm">Baby Distance:</span>
-                            <span id="distance-val" class="text-2xl font-bold text-white tracking-tight">12.4 cm</span>
-                        </div>
-                        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                            <div id="distance-bar" class="bg-cyan-500 h-full rounded-full transition-all duration-500" style="width: 35%;"></div>
-                        </div>
-                        <div class="flex justify-between text-[11px] text-slate-500">
-                            <span>Base of Cradle (0 cm)</span>
-                            <span>Mattress Level (15 cm)</span>
-                            <span>Max (50 cm)</span>
-                        </div>
-                    </div>
+                    <span class="p-2 rounded-xl bg-cardBg border border-cardBorder text-accentTeal">
+                        <i class="fa-solid fa-ruler-vertical"></i>
+                    </span>
                 </div>
-
-                <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-                    <span>Position check: <strong class="text-slate-200">Normal</strong></span>
-                    <span class="text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> Safe</span>
+                <div class="mt-6 space-y-1">
+                    <div class="text-2xl font-black text-white" id="occupancy-text">Occupied</div>
+                    <p class="text-xs text-slate-400">Ultrasonic Distance: <span id="distance-val" class="text-cyan-400 font-mono font-bold">12.5 cm</span></p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-cardBorder/60 flex justify-between items-center text-xs text-slate-400">
+                    <span>Baby Position</span>
+                    <span id="position-badge" class="px-2 py-0.5 rounded-full bg-accentGreen/10 text-accentGreen font-medium">Safe & Snug</span>
                 </div>
             </div>
 
             <!-- Card 2: Baby Weight Monitor -->
-            <div class="bg-cardBg hover:bg-cardHover border border-slate-800/80 rounded-3xl p-6 transition-all duration-300 shadow-xl flex flex-col justify-between group">
-                <div>
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 text-lg">
-                                <i class="fa-solid fa-weight-scale"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-white text-base">Baby Weight Monitor</h3>
-                                <p class="text-xs text-slate-400">Load Cell + HX711 Module</p>
-                            </div>
-                        </div>
-                        <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-teal-500/10 text-teal-400 border border-teal-500/30">
-                            Calibrated
-                        </span>
+            <div class="bg-cardBorder/40 backdrop-blur-xl border border-cardBorder rounded-2xl p-5 flex flex-col justify-between shadow-lg relative overflow-hidden group hover:border-accentTeal/50 transition duration-300">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Load Cell (HX711)</p>
+                        <h3 class="text-lg font-bold text-white mt-1 flex items-center gap-2">
+                            <i class="fa-solid fa-weight-scale text-emerald-400"></i> Weight Monitor
+                        </h3>
                     </div>
-
-                    <div class="my-6 space-y-2">
-                        <span class="text-slate-400 text-sm">Current Measured Weight:</span>
-                        <div class="flex items-baseline gap-2">
-                            <span id="weight-val" class="text-4xl font-extrabold text-white tracking-tight">4.25</span>
-                            <span class="text-lg font-medium text-cyan-400">kg</span>
-                        </div>
-                        <p class="text-xs text-slate-400 pt-2">Last tare calibration: <span class="text-slate-200">Today, 08:00 AM</span></p>
-                    </div>
+                    <span class="p-2 rounded-xl bg-cardBg border border-cardBorder text-emerald-400">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </span>
                 </div>
-
-                <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-                    <span>HX711 Gain: <strong class="text-slate-200">128 (Channel A)</strong></span>
-                    <button onclick="tareScale()" class="text-cyan-400 hover:text-cyan-300 underline font-medium cursor-pointer">Tare Scale</button>
+                <div class="mt-6 space-y-1">
+                    <div class="text-2xl font-black text-white"><span id="weight-val">4.25</span> <span class="text-sm font-normal text-slate-400">kg</span></div>
+                    <p class="text-xs text-slate-400">Calibrated via HX711 Amplifier</p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-cardBorder/60 flex justify-between items-center text-xs text-slate-400">
+                    <span>Tare Status</span>
+                    <button onclick="tareScale()" class="text-accentTeal hover:underline font-medium">Zero / Tare</button>
                 </div>
             </div>
 
-            <!-- Card 3: Movement & Comfort -->
-            <div class="bg-cardBg hover:bg-cardHover border border-slate-800/80 rounded-3xl p-6 transition-all duration-300 shadow-xl flex flex-col justify-between group">
-                <div>
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-lg">
-                                <i class="fa-solid fa-heart-pulse"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-white text-base">Movement & Comfort</h3>
-                                <p class="text-xs text-slate-400">Vibration Motor & Activity</p>
-                            </div>
-                        </div>
-                        <span id="vibe-status-pill" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                            Calm
-                        </span>
+            <!-- Card 3: Temperature Monitor (Replaced BOM) -->
+            <div class="bg-cardBorder/40 backdrop-blur-xl border border-cardBorder rounded-2xl p-5 flex flex-col justify-between shadow-lg relative overflow-hidden group hover:border-accentTeal/50 transition duration-300">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Environment</p>
+                        <h3 class="text-lg font-bold text-white mt-1 flex items-center gap-2">
+                            <i class="fa-solid fa-temperature-half text-amber-400"></i> Temp Monitor
+                        </h3>
                     </div>
-
-                    <div class="my-6 space-y-4">
-                        <div class="flex justify-between items-center">
-                            <span class="text-slate-400 text-sm">Movement Intensity:</span>
-                            <span id="movement-intensity" class="text-sm font-semibold text-emerald-400">Low (Stable)</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-2xl border border-slate-800">
-                            <div class="flex items-center gap-3">
-                                <div id="motor-icon-bg" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400">
-                                    <i class="fa-solid fa-power-off text-xs"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-xs font-medium text-white">Vibration Comfort Motor</h4>
-                                    <p id="motor-subtext" class="text-[11px] text-slate-400">Currently Inactive (Standby)</p>
-                                </div>
-                            </div>
-                            <button onclick="toggleVibrationMotor()" id="card-motor-btn" class="px-3 py-1.5 bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-slate-200 text-xs font-semibold rounded-xl transition-all border border-slate-700 cursor-pointer">
-                                Activate
-                            </button>
-                        </div>
-                    </div>
+                    <span class="p-2 rounded-xl bg-cardBg border border-cardBorder text-amber-400">
+                        <i class="fa-solid fa-fire"></i>
+                    </span>
                 </div>
-
-                <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-                    <span>Auto-soothe: <strong class="text-emerald-400">Enabled</strong></span>
-                    <span id="last-movement-time">Last restless: None</span>
+                <div class="mt-6 space-y-1">
+                    <div class="text-2xl font-black text-white"><span id="temp-val">28.4</span> <span class="text-sm font-normal text-slate-400">°C</span></div>
+                    <p class="text-xs text-slate-400">Humidity: <span id="hum-val" class="font-mono text-cyan-400">62%</span></p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-cardBorder/60 flex justify-between items-center text-xs text-slate-400">
+                    <span>Room Climate</span>
+                    <span id="temp-status" class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-medium">Comfortable</span>
                 </div>
             </div>
 
-        </section>
-
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- System Event Log -->
-            <div class="lg:col-span-2 bg-cardBg border border-slate-800/80 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
-                <div>
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-terminal text-cyan-400"></i>
-                            <h3 class="font-semibold text-white text-base">Live ESP32 Telemetry & Event Log</h3>
-                        </div>
-                        <button onclick="clearLogs()" class="text-xs text-slate-400 hover:text-white underline cursor-pointer">Clear Log</button>
+            <!-- Card 4: Movement & Comfort Status -->
+            <div class="bg-cardBorder/40 backdrop-blur-xl border border-cardBorder rounded-2xl p-5 flex flex-col justify-between shadow-lg relative overflow-hidden group hover:border-accentTeal/50 transition duration-300">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Motion & Alerts</p>
+                        <h3 class="text-lg font-bold text-white mt-1 flex items-center gap-2">
+                            <i class="fa-solid fa-heart-pulse text-rose-400"></i> Comfort State
+                        </h3>
                     </div>
-                    <div id="log-container" class="bg-slate-950 rounded-2xl p-4 font-mono text-xs text-slate-300 h-48 overflow-y-auto space-y-2 border border-slate-900">
-                        <div class="text-slate-500">[00:00:01] System initialized. ESP32 Wi-Fi connected successfully.</div>
-                        <div class="text-slate-400">[00:00:02] HX711 Load Cell calibrated. Zero offset applied.</div>
-                        <div class="text-emerald-400">[00:00:03] Ultrasonic sensor active. Baby detected in cradle (12.4 cm).</div>
-                    </div>
+                    <span class="p-2 rounded-xl bg-cardBg border border-cardBorder text-rose-400">
+                        <i class="fa-solid fa-bell"></i>
+                    </span>
                 </div>
-                <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
-                    <span>Device ID: <code class="text-cyan-400">ESP32_CRA_09</code></span>
-                    <span>Firmware v1.2.0</span>
+                <div class="mt-6 space-y-1">
+                    <div class="text-xl font-black text-white" id="movement-text">Normal Rest</div>
+                    <p class="text-xs text-slate-400">Vibration Motor: <span id="motor-state" class="text-slate-300 font-mono">STANDBY</span></p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-cardBorder/60 flex justify-between items-center text-xs text-slate-400">
+                    <span>Auto-Sooth Mode</span>
+                    <span class="px-2 py-0.5 rounded-full bg-accentTeal/10 text-accentTeal font-medium">Enabled</span>
                 </div>
             </div>
 
-            <!-- Bill of Materials (BOM) Quick Reference -->
-            <div class="bg-cardBg border border-slate-800/80 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center gap-2 mb-4">
-                        <i class="fa-solid fa-microchip text-teal-400"></i>
-                        <h3 class="font-semibold text-white text-base">Project Bill of Materials</h3>
-                    </div>
-                    <div class="space-y-2.5 text-xs">
-                        <div class="flex justify-between items-center p-2 rounded-xl bg-slate-900/50 border border-slate-800">
-                            <span class="text-slate-300 font-medium">ESP32 Microcontroller</span>
-                            <span class="text-cyan-400 font-mono">1x (₹350)</span>
-                        </div>
-                        <div class="flex justify-between items-center p-2 rounded-xl bg-slate-900/50 border border-slate-800">
-                            <span class="text-slate-300 font-medium">Ultrasonic Sensor (HC-SR04)</span>
-                            <span class="text-cyan-400 font-mono">1x (₹100)</span>
-                        </div>
-                        <div class="flex justify-between items-center p-2 rounded-xl bg-slate-900/50 border border-slate-800">
-                            <span class="text-slate-300 font-medium">Load Cell + HX711</span>
-                            <span class="text-cyan-400 font-mono">1x (₹250)</span>
-                        </div>
-                        <div class="flex justify-between items-center p-2 rounded-xl bg-slate-900/50 border border-slate-800">
-                            <span class="text-slate-300 font-medium">Vibration Motor & PSU</span>
-                            <span class="text-cyan-400 font-mono">1x (₹230)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-xs">
-                    <span class="text-slate-400">Total Project Cost:</span>
-                    <span class="text-emerald-400 font-bold font-mono text-sm">₹1,080</span>
-                </div>
-            </div>
+        </div>
 
-        </section>
+        <!-- Event Log Terminal Section -->
+        <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 shadow-xl">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-terminal text-accentTeal"></i> ESP32 Live Telemetry Log
+                </h3>
+                <button onclick="clearLog()" class="text-xs text-slate-400 hover:text-white transition">Clear Log</button>
+            </div>
+            <div id="terminal-log" class="bg-darkBg rounded-xl p-3 font-mono text-xs text-slate-300 h-32 overflow-y-auto space-y-1 border border-cardBorder/60">
+                <div>[System] Initialized ESP32 Wi-Fi & Sensors successfully.</div>
+                <div>[Sensor] Ultrasonic distance stable at 12.5cm. Occupancy: OCCUPIED.</div>
+                <div>[HX711] Weight baseline calibrated: 4.25 kg.</div>
+                <div>[Climate] Room temperature reading: 28.4°C.</div>
+            </div>
+        </div>
 
     </main>
 
-    <footer class="w-full bg-[#0e1626]/80 border-t border-slate-800 py-4 px-6 text-center text-xs text-slate-500">
-        Smart Baby Cradle Occupancy and Movement Monitoring System &bull; Inspired by Modern IoT Dashboards
-    </footer>
-
-    <!-- Custom Notification Toast Modal -->
-    <div id="toast-modal" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
-        <div class="bg-slate-900 border border-cyan-500/40 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
-            <div id="toast-icon" class="text-cyan-400"><i class="fa-solid fa-info-circle text-lg"></i></div>
-            <div>
-                <h4 id="toast-title" class="text-xs font-bold text-white">Notification</h4>
-                <p id="toast-msg" class="text-[11px] text-slate-300">Action performed successfully.</p>
-            </div>
-        </div>
-    </div>
-
+    <!-- JavaScript for Live Clock & Sensor Simulation -->
     <script>
-        
-        // Live Clock
-        function updateClock() {
+        // Update live clock
+        setInterval(() => {
             const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('live-clock').innerText = `${hours}:${minutes}:${seconds}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
+            document.getElementById('live-clock').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }, 1000);
 
-        // State variables
-        let isMotorActive = false;
-        let cradleOccupied = true;
-        let currentWeight = 4.25;
+        let isSimulating = true;
 
-        function showToast(title, message, isAlert = false) {
-            const modal = document.getElementById('toast-modal');
-            document.getElementById('toast-title').innerText = title;
-            document.getElementById('toast-msg').innerText = message;
-            
-            const iconDiv = document.getElementById('toast-icon');
-            if(isAlert) {
-                iconDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-amber-400 text-lg"></i>';
-            } else {
-                iconDiv.innerHTML = '<i class="fa-solid fa-circle-check text-cyan-400 text-lg"></i>';
+        // Simulated sensor updater
+        setInterval(() => {
+            if (!isSimulating) return;
+
+            // Random slight variations for realism
+            let weight = (4.20 + (Math.random() * 0.10 - 0.05)).toFixed(2);
+            let distance = (12.0 + (Math.random() * 1.5 - 0.75)).toFixed(1);
+            let temp = (28.0 + (Math.random() * 0.8 - 0.4)).toFixed(1);
+            let humidity = Math.floor(60 + Math.random() * 5);
+
+            document.getElementById('weight-val').innerText = weight;
+            document.getElementById('distance-val').innerText = distance + ' cm';
+            document.getElementById('temp-val').innerText = temp;
+            document.getElementById('hum-val').innerText = humidity + '%';
+
+            // Random movement changes occasionally
+            const movements = ["Calm Sleep", "Normal Rest", "Slight Stirring"];
+            if (Math.random() < 0.2) {
+                const randomMove = movements[Math.floor(Math.random() * movements.length)];
+                document.getElementById('movement-text').innerText = randomMove;
+                appendLog(`[Sensor] Motion detected change: ${randomMove}`);
             }
 
-            modal.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+        }, 3000);
+
+        function triggerVibrationTest() {
+            const motorState = document.getElementById('motor-state');
+            motorState.innerText = "ACTIVE (SOOTHING)";
+            motorState.className = "text-accentTeal font-mono font-bold animate-pulse";
+            appendLog('[Actuator] Vibration motor triggered via dashboard command.');
+            
             setTimeout(() => {
-                modal.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
-            }, 3500);
-        }
-
-        function appendLog(message, type = 'info') {
-            const container = document.getElementById('log-container');
-            const timeStr = new Date().toTimeString().split(' ')[0];
-            const div = document.createElement('div');
-            
-            if(type === 'alert') {
-                div.className = 'text-amber-400';
-            } else if(type === 'success') {
-                div.className = 'text-emerald-400';
-            } else {
-                div.className = 'text-slate-300';
-            }
-            
-            div.innerText = `[${timeStr}] ${message}`;
-            container.appendChild(div);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        function toggleVibrationMotor() {
-            isMotorActive = !isMotorActive;
-            const btnBanner = document.getElementById('banner-vibe-btn');
-            const btnCard = document.getElementById('card-motor-btn');
-            const iconBg = document.getElementById('motor-icon-bg');
-            const subtext = document.getElementById('motor-subtext');
-            const vibePill = document.getElementById('vibe-status-pill');
-            const intensity = document.getElementById('movement-intensity');
-
-            if(isMotorActive) {
-                btnBanner.classList.add('bg-cyan-500', 'text-slate-950', 'border-cyan-400');
-                btnCard.innerText = 'Deactivate';
-                btnCard.classList.add('bg-cyan-500', 'text-slate-950', 'border-cyan-400');
-                iconBg.className = 'w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center animate-pulse';
-                subtext.innerText = 'Vibration motor running (Soothing mode)';
-                vibePill.innerText = 'Soothing Active';
-                vibePill.className = 'px-2.5 py-1 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30';
-                intensity.innerText = 'Active Stimulation';
-                intensity.className = 'text-sm font-semibold text-cyan-400';
-                
-                showToast("Motor Activated", "ESP32 triggered vibration motor for baby comfort soothing.");
-                appendLog("ESP32 COMMAND: Vibration motor activated via web dashboard.", "success");
-            } else {
-                btnBanner.classList.remove('bg-cyan-500', 'text-slate-950', 'border-cyan-400');
-                btnCard.innerText = 'Activate';
-                btnCard.classList.remove('bg-cyan-500', 'text-slate-950', 'border-cyan-400');
-                iconBg.className = 'w-8 h-8 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center';
-                subtext.innerText = 'Currently Inactive (Standby)';
-                vibePill.innerText = 'Calm';
-                vibePill.className = 'px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30';
-                intensity.innerText = 'Low (Stable)';
-                intensity.className = 'text-sm font-semibold text-emerald-400';
-                
-                showToast("Motor Stopped", "Vibration motor turned off.");
-                appendLog("ESP32 COMMAND: Vibration motor deactivated.", "info");
-            }
+                motorState.innerText = "STANDBY";
+                motorState.className = "text-slate-300 font-mono";
+                appendLog('[Actuator] Vibration cycle completed. Motor returned to standby.');
+            }, 4000);
         }
 
         function tareScale() {
-            currentWeight = 0.00;
-            document.getElementById('weight-val').innerText = '0.00';
-            showToast("Scale Tared", "HX711 zero offset successfully reset to 0.00 kg.");
-            appendLog("HX711 Load Cell tared. Zero baseline established.", "success");
-            
-            setTimeout(() => {
-                currentWeight = (4.15 + Math.random() * 0.2).toFixed(2);
-                document.getElementById('weight-val').innerText = currentWeight;
-                appendLog(`HX711 Reading stabilized: ${currentWeight} kg.`, "info");
-            }, 3000);
+            document.getElementById('weight-val').innerText = "0.00";
+            appendLog('[HX711] Scale tared / zeroed successfully.');
         }
 
-        function triggerSimulation() {
-            cradleOccupied = !cradleOccupied;
-            const occupancyPill = document.getElementById('occupancy-pill');
-            const heroBadge = document.getElementById('hero-occupancy-badge');
-            const distanceVal = document.getElementById('distance-val');
-            const distanceBar = document.getElementById('distance-bar');
-
-            if(!cradleOccupied) {
-                occupancyPill.innerText = 'Empty - Alert!';
-                occupancyPill.className = 'px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30 animate-pulse';
-                heroBadge.innerText = 'Baby Absent! Check Cradle';
-                heroBadge.className = 'text-lg font-bold text-rose-400 mt-1';
-                distanceVal.innerText = '42.1 cm';
-                distanceBar.style.width = '85%';
-                distanceBar.className = 'bg-rose-500 h-full rounded-full transition-all duration-500';
-                
-                showToast("Absence Alert!", "Ultrasonic sensor detected cradle is empty!", true);
-                appendLog("WARNING: Ultrasonic sensor detected absence! Baby may have left the cradle.", "alert");
+        function toggleSimulation() {
+            isSimulating = !isSimulating;
+            const btn = document.getElementById('sim-toggle-btn');
+            if (isSimulating) {
+                btn.innerText = "Pause Simulation";
+                btn.className = "px-4 py-2 bg-cardBg hover:bg-slate-800 text-slate-200 border border-cardBorder text-xs font-semibold rounded-xl transition";
+                appendLog('[System] Sensor data stream simulation resumed.');
             } else {
-                occupancyPill.innerText = 'Occupied';
-                occupancyPill.className = 'px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30';
-                heroBadge.innerText = 'Baby Sleeping Soundly';
-                heroBadge.className = 'text-lg font-bold text-emerald-400 mt-1';
-                distanceVal.innerText = '12.4 cm';
-                distanceBar.style.width = '35%';
-                distanceBar.className = 'bg-cyan-500 h-full rounded-full transition-all duration-500';
-                
-                showToast("Status Normal", "Baby detected safely inside cradle.");
-                appendLog("Ultrasonic sensor normal. Baby is secure inside cradle.", "success");
+                btn.innerText = "Resume Simulation";
+                btn.className = "px-4 py-2 bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs font-semibold rounded-xl transition";
+                appendLog('[System] Sensor data stream simulation paused.');
             }
         }
 
-        function clearLogs() {
-            document.getElementById('log-container').innerHTML = '<div class="text-slate-500">[Log cleared by user]</div>';
+        function appendLog(message) {
+            const term = document.getElementById('terminal-log');
+            const timeStr = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            div.innerText = `[${timeStr}] ${message}`;
+            term.appendChild(div);
+            term.scrollTop = term.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('terminal-log').innerHTML = '<div>[System] Log cleared.</div>';
         }
     </script>
 </body>
